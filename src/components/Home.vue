@@ -1,7 +1,6 @@
 <template>
    <div class="container">
       <h1>Home Component</h1>
-      <p>Welcome {{ user }}</p>
    </div>
 </template>
 
@@ -10,8 +9,10 @@
       name: 'home',
       data(){
          return{
-            user: this.$store.state.authStore.testUser
+
          }
+      },
+      created(){
       }
    }
 </script>

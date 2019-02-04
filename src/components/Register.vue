@@ -31,6 +31,8 @@
                username: '',
                email: '',
                password: '',
+               active: 1,
+               isAdmin: false
             },
             errorMessage: null
          }
@@ -49,7 +51,9 @@
                         firstname: this.accountInfo.firstname,
                         lastname: this.accountInfo.lastname,
                         username: this.accountInfo.username,
-                        email: this.accountInfo.email
+                        email: this.accountInfo.email,
+                        isAdmin: this.accountInfo.isAdmin,
+                        active: this.accountInfo.active
                      }).then(docRef => {
                         this.$router.replace('dashboard');
                      }).catch(err => {

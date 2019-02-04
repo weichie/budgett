@@ -5,20 +5,14 @@
 
       <div class="register-panel" v-if="!success">
          <form @submit.prevent="registerUser()">
-            <input type="text" v-model="accountInfo.firstname" placeholder="Firstname" /><br>
-            <input type="text" v-model="accountInfo.lastname" placeholder="Lastname" /><br>
-            <input type="text" v-model="accountInfo.username" placeholder="Username" /><br>
-            <input type="email" v-model="accountInfo.email" placeholder="Email" /><br>
-            <input type="password" v-model="accountInfo.password" placeholder="Password" /><br>
+            <input type="text" v-model="accountInfo.firstname" placeholder="Firstname" autocomplete="off" /><br>
+            <input type="text" v-model="accountInfo.lastname" placeholder="Lastname" autocomplete="off" /><br>
+            <input type="text" v-model="accountInfo.username" placeholder="Username" autocomplete="off" /><br>
+            <input type="email" v-model="accountInfo.email" placeholder="Email" autocomplete="off" /><br>
+            <input type="password" v-model="accountInfo.password" placeholder="Password" autocomplete="off" /><br>
             <button>Register</button>
          </form>
          Already have an account? <router-link to="/login">Login</router-link>
-      </div>
-
-
-      <div v-else>
-         <h2>Success!</h2>
-         <p>Thank you for creating an account! Please <router-link to="/login">login</router-link> to get started.</p>
       </div>
    </div>
 </template>
@@ -38,7 +32,6 @@
                email: '',
                password: '',
             },
-            success: false,
             errorMessage: null
          }
       },
@@ -58,12 +51,7 @@
                         username: this.accountInfo.username,
                         email: this.accountInfo.email
                      }).then(docRef => {
-                        this.accountInfo.firstname = '';
-                        this.accountInfo.lastname = '';
-                        this.accountInfo.username = '';
-                        this.accountInfo.email = '';
-                        this.accountInfo.password = '';
-                        this.success = true;
+                        this.$router.replace('dashboard');
                      }).catch(err => {
                         this.errorMessage = err.message;
                         console.warn('Whoops, something went wrong:', err);
@@ -76,9 +64,6 @@
                   this.errorMessage = err.message
                   console.error(err.message);
                });
-
-            
-            
          }
       }
    }

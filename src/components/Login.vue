@@ -3,14 +3,15 @@
       <h1>Login Component</h1>
       <h3 v-show="errorMessage">{{errorMessage}}</h3>
       <form @submit.prevent="login()">
-         <input type="email" placeholder="email" v-model="email" />
-         <input type="password" placeholder="password" v-model="password" />
+         <input type="email" placeholder="email" v-model="email" autocomplete="email" />
+         <input type="password" placeholder="password" v-model="password" autocomplete="current-password" />
          <button>Add</button>
       </form>
    </div>
 </template>
 
 <script>
+   import {STORE_AUTH_ACTION_GET_USERINFO} from '../store/modules/authStore'
    import firebase from 'firebase';
    import db from "../firestore";
 
@@ -27,12 +28,10 @@
          login(){
             firebase.auth().signInWithEmailAndPassword(this.email, this.password)
                .then(user => {
-                  console.log(firebase.auth().currentUser.displayName + ' is now logged in!');
                   this.$router.replace('dashboard');
                }).catch(err => {
                   console.error(err);
                });
-            this.$router.replace('home');
          }
       }
    }

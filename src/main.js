@@ -7,6 +7,8 @@ import store from './store/store'
 import { routes } from './routes'
 import './assets/style.css'
 
+import { STORE_AUTH_ACTION_GET_USERINFO } from './store/modules/authStore'
+
 Vue.use(VueRouter);
 
 Vue.config.productionTip = false
@@ -28,6 +30,10 @@ router.beforeEach((to, from, next) => {
 });
 
 firebase.auth().onAuthStateChanged(() => {
+  if (firebase.auth().currentUser){
+    store.dispatch(STORE_AUTH_ACTION_GET_USERINFO, firebase.auth().currentUser);
+  }
+
   if(!app){
     app = new Vue({
       router,

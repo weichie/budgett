@@ -5,7 +5,6 @@ import firebase from 'firebase'
 
 import store from './store/store'
 import { routes } from './routes'
-import './assets/style.css'
 
 import { STORE_AUTH_ACTION_GET_USERINFO } from './store/modules/authStore'
 

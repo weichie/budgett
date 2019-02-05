@@ -1,6 +1,7 @@
 <template>
    <header>
       <router-link to="/" class="logo">Budgett</router-link>
+      <h1>{{currentRoute}}</h1>
       <nav class="main-nav">
          <router-link v-if="!username" to="/login">Login</router-link>
          <router-link v-if="!username" to="/register">Register</router-link>
@@ -23,15 +24,17 @@
       computed: {
          username(){
             return this.$store.state.authStore.activeUser.username
+         },
+         currentRoute(){
+            return this.$route.name
          }
       },
       methods: {
          logout(){
-            firebase.auth().signOut()
-               .then(() => {
-                  this.$store.dispatch(STORE_AUTH_ACTION_RESET_USERINFO);
-                  this.$router.replace('login');
-               });
+            firebase.auth().signOut().then(() => {
+               this.$store.dispatch(STORE_AUTH_ACTION_RESET_USERINFO);
+               this.$router.replace('login');
+            });
          }
       }   
    }

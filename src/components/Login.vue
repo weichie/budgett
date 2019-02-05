@@ -1,12 +1,19 @@
 <template>
-   <div class="container">
-      <h1>Login Component</h1>
-      <h3 v-show="errorMessage">{{errorMessage}}</h3>
-      <form @submit.prevent="login()">
-         <input type="email" placeholder="email" v-model="email" autocomplete="email" />
-         <input type="password" placeholder="password" v-model="password" autocomplete="current-password" />
-         <button>Add</button>
+   <div class="container auth-container">
+      <h2>Login</h2>
+      <p class="error-message" v-show="errorMessage">{{errorMessage}}</p>
+      <form @submit.prevent="login()" class="auth-form">
+         <div class="input-group large">
+            <input type="email" placeholder="email" v-model="email" autocomplete="email" />
+         </div>
+         <div class="input-group large">
+            <input type="password" placeholder="password" v-model="password" autocomplete="current-password" />
+         </div>
+         <div class="input-group large">
+            <button class="btn btn-block btn-primary">Login</button>
+         </div>
       </form>
+      <small>Not yet an account? <router-link to="/register">Create one</router-link></small>
    </div>
 </template>
 
@@ -30,7 +37,7 @@
                .then(user => {
                   this.$router.replace('dashboard');
                }).catch(err => {
-                  console.error(err);
+                  this.errorMessage = err.message
                });
          }
       }

@@ -1,18 +1,32 @@
 <template>
-   <div class="container">
-      <h1>Register your account!</h1>
-      <h3 v-show="this.errorMessage">{{errorMessage}}</h3>
+   <div class="container auth-container">
+      <h2>Register a new account!</h2>
 
-      <div class="register-panel" v-if="!success">
-         <form @submit.prevent="registerUser()">
-            <input type="text" v-model="accountInfo.firstname" placeholder="Firstname" autocomplete="off" /><br>
-            <input type="text" v-model="accountInfo.lastname" placeholder="Lastname" autocomplete="off" /><br>
-            <input type="text" v-model="accountInfo.username" placeholder="Username" autocomplete="off" /><br>
-            <input type="email" v-model="accountInfo.email" placeholder="Email" autocomplete="off" /><br>
-            <input type="password" v-model="accountInfo.password" placeholder="Password" autocomplete="off" /><br>
-            <button>Register</button>
+      <div class="register-panel">
+         <p class="error-message" v-show="this.errorMessage">{{errorMessage}}</p>
+
+         <form @submit.prevent="registerUser()" class="auth-form">
+            <div class="input-group medium">
+               <input type="text" v-model="accountInfo.firstname" placeholder="Firstname" autocomplete="off" />
+            </div>
+            <div class="input-group medium">
+               <input type="text" v-model="accountInfo.lastname" placeholder="Lastname" autocomplete="off" />
+            </div>
+            <div class="input-group large">
+               <input type="text" v-model="accountInfo.username" placeholder="Username" autocomplete="off" />
+            </div>
+            <div class="input-group large">
+               <input type="email" v-model="accountInfo.email" placeholder="Email" autocomplete="off" />
+            </div>
+            <div class="input-group large">
+               <input type="password" v-model="accountInfo.password" placeholder="Password" autocomplete="off" />
+            </div>
+            <div class="input-group large">
+               <button class="btn btn-block btn-primary">Create account</button>
+            </div>
          </form>
-         Already have an account? <router-link to="/login">Login</router-link>
+
+         <small>Already have an account? <router-link to="/login">Login</router-link></small>
       </div>
    </div>
 </template>
@@ -39,14 +53,11 @@
       },
       methods: {
          registerUser(){
-            console.log(this.accountInfo.email, this.accountInfo.password);
-
             firebase.auth().createUserWithEmailAndPassword(this.accountInfo.email, this.accountInfo.password)
-               .then(user => {
+               .then(() => {
                   firebase.auth().currentUser.updateProfile({
                      displayName: this.accountInfo.username
-                  }).then(user => {
-                     const displayName = firebase.auth().currentUser.displayName;
+                  }).then(() => {
                      db.collection('users').add({
                         firstname: this.accountInfo.firstname,
                         lastname: this.accountInfo.lastname,
@@ -54,19 +65,16 @@
                         email: this.accountInfo.email,
                         isAdmin: this.accountInfo.isAdmin,
                         active: this.accountInfo.active
-                     }).then(docRef => {
+                     }).then(() => {
                         this.$router.replace('dashboard');
                      }).catch(err => {
                         this.errorMessage = err.message;
-                        console.warn('Whoops, something went wrong:', err);
                      });
                   }).catch(err => {
                      this.errorMessage = err.message;
-                     console.log(err.message);
                   });
                }).catch(err => {
                   this.errorMessage = err.message
-                  console.error(err.message);
                });
          }
       }

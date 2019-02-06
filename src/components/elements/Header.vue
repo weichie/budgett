@@ -16,7 +16,7 @@
    import {
       STORE_AUTH_ACTION_RESET_USERINFO,
       STORE_AUTH_ACTION_IS_LOGGED_IN
-   } from '../store/modules/authStore'
+   } from '../../store/modules/authStore'
 
    export default {
       data(){

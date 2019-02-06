@@ -1,6 +1,7 @@
 <template>
    <div class="container">
-      <h1>Dashboard</h1>
+      <h2>Welcome, {{ this.$store.state.authStore.activeUser.username }}!</h2>
+
    </div>
 </template>
 
@@ -13,6 +14,6 @@
          return{
             
          }
-      }
+      },
    }
 </script>

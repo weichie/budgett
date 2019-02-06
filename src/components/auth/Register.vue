@@ -33,7 +33,7 @@
 
 <script>
    import firebase from 'firebase'
-   import db from '../firestore'
+   import db from '../../firestore'
 
    export default {
       name: 'register',

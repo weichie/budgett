@@ -18,9 +18,9 @@
 </template>
 
 <script>
-   import {STORE_AUTH_ACTION_GET_USERINFO} from '../store/modules/authStore'
+   import {STORE_AUTH_ACTION_GET_USERINFO} from '../../store/modules/authStore'
    import firebase from 'firebase';
-   import db from "../firestore";
+   import db from "../../firestore";
 
    export default {
       name: 'login',

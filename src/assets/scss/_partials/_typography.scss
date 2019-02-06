@@ -13,3 +13,16 @@ a{
       color: $secondary-color;
    }
 }
+
+h1{
+   font-weight: 300;
+   font-size: 28px;
+   color: $primary-color;
+   text-transform: capitalize;
+   flex: 1;
+}
+
+h2{
+   color: $primary-color;
+   font-size: 22px;
+}

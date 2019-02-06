@@ -1,11 +1,11 @@
 <template>
-   <div class="container">
-      <h1>Home Component</h1>
+   <div class="flash-message">
+
    </div>
 </template>
 
 <script>
    export default {
-      name: 'home',
+      name: 'flash'
    }
 </script>

@@ -17,7 +17,7 @@
             </router-link>
          </li>
          <li>
-            <router-link to="/docs">
+            <router-link to="/clients">
                <i class="fas fa-clipboard-list"></i>
             </router-link>
          </li>

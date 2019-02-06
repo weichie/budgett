@@ -6,7 +6,10 @@ import firebase from 'firebase'
 import store from './store/store'
 import { routes } from './routes'
 
-import { STORE_AUTH_ACTION_GET_USERINFO } from './store/modules/authStore'
+import { 
+  STORE_AUTH_ACTION_GET_USERINFO,
+  STORE_AUTH_ACTION_IS_LOGGED_IN
+} from './store/modules/authStore'
 
 Vue.use(VueRouter);
 
@@ -28,11 +31,12 @@ router.beforeEach((to, from, next) => {
   else next();
 });
 
-firebase.auth().onAuthStateChanged(() => {
-  if (firebase.auth().currentUser){
+firebase.auth().onAuthStateChanged(user => {
+  if (user) {
     store.dispatch(STORE_AUTH_ACTION_GET_USERINFO, firebase.auth().currentUser);
+    store.dispatch(STORE_AUTH_ACTION_IS_LOGGED_IN, true);
   }
-
+  
   if(!app){
     app = new Vue({
       router,

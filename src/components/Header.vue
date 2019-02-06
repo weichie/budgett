@@ -13,7 +13,10 @@
 
 <script>
    import firebase from 'firebase'
-   import {STORE_AUTH_ACTION_RESET_USERINFO} from '../store/modules/authStore'
+   import {
+      STORE_AUTH_ACTION_RESET_USERINFO,
+      STORE_AUTH_ACTION_IS_LOGGED_IN
+   } from '../store/modules/authStore'
 
    export default {
       data(){
@@ -33,6 +36,7 @@
          logout(){
             firebase.auth().signOut().then(() => {
                this.$store.dispatch(STORE_AUTH_ACTION_RESET_USERINFO);
+               this.$store.dispatch(STORE_AUTH_ACTION_IS_LOGGED_IN, false);
                this.$router.replace('login');
             });
          }

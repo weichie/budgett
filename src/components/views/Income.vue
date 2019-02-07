@@ -23,7 +23,7 @@
                      <input type="text" placeholder="Payee" v-model="payee">
                   </div>
                   <div class="input-group medium">
-                     <input type="text" placeholder="date" v-model="date">
+                     <input type="date" placeholder="date" v-model="date">
                   </div>
                   <div class="input-group large">
                      <input type="text" placeholder="Location" v-model="location">
@@ -47,6 +47,16 @@
             </div>
          </div>
       </div>
+
+      <ul>
+         <li>test</li>
+      </ul>
+
+      <ul>
+         <li v-for="(record, i) in getRecords" :key="'incomeRecord_' + i">
+            test
+         </li>
+      </ul>
    </div>
 </template>
 
@@ -67,19 +77,17 @@
             date: '',
             location: '',
             successMessage: null,
-            errorMessage: null
+            errorMessage: null,
+            incomeRecords: []
          }
       },
+      // mounted(){
+      //    this.getRecords();
+      // },
       methods: {
          saveRecord(){
             db.collection('income').add({
-               owner: this.$store.state.authStore.activeUser.docId,
-               selectedCategory: this.selectedCategory,
-               income: this.income,
-               payee: this.payee,
-               note: this.note,
-               date: this.date,
-               location: this.location,
+               owner: this.$store.state.authStore.activeUser.docId
             }).then(() => {
                this.cancelRecord();
                this.successMessage = "Record added to your account!";
@@ -97,6 +105,22 @@
             this.note = '',
             this.date = '',
             this.location = ''
+         },
+         
+      },
+      computed: {
+         getRecords(){
+            db.collection("income").where("owner", "==", this.$store.state.authStore.activeUser.docId)
+               .get()
+               .then(querySnapshot => {
+                  querySnapshot.forEach(doc => {
+                     this.incomeRecords.push(doc.data());
+                  });
+                  console.log(this.incomeRecords);
+               })
+               .catch(function(error) {
+                  console.log("Error getting documents: ", error);
+               });
          }
       }
    }

@@ -12,9 +12,9 @@ const state = {
 };
 
 const getters = {
-   getUserInfo: (state, getters, rootState) => {
-      return state;
-   }
+   getUserInfo: state => state,
+   isLoggedIn: state => state.isLoggedIn,
+   getUserDoc: state => state.activeUser.docId
 };
 
 const actions = {

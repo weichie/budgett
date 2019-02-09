@@ -62,7 +62,7 @@
    import { incomeCategories } from '../../utils'
    import firebase from 'firebase'
    import db from '../../firestore'
-   import { STORE_INCOME_GET_DOC_ID } from '../../store/modules/incomeStore'
+   import { STORE_INCOME_GET_DOC_ID, STORE_INCOME_RESET_DOC_ID } from '../../store/modules/incomeStore'
 
    export default {
       name: 'income',
@@ -85,11 +85,13 @@
       mounted(){
          const owner = this.$store.getters.getUserDoc;
          let userIncomeDoc = db.collection('income').where('owner', '==', owner).get()
-            .then(doc => this.$store.dispatch(STORE_INCOME_GET_DOC_ID, doc.docs[0].id));
+            .then(doc => this.$store.dispatch(STORE_INCOME_GET_DOC_ID, doc.docs[0].id))
+            .catch(() => this.$store.dispatch(STORE_INCOME_RESET_DOC_ID));
       },
       methods: {
          saveRecord(){
             const incomeDoc = this.$store.getters.getIncomeDocId;
+
             if(incomeDoc){
                const yearCollection = new Date().getFullYear().toString();
                db.collection('income')
@@ -101,7 +103,23 @@
                      this.errorMessage = err.message;
                   });
             }else{
-               console.log('This user need to create an income document first');
+               const owner = this.$store.getters.getUserDoc;
+               const yearCollection = new Date().getFullYear().toString();
+
+               db.collection('income').add({
+                  owner
+               }).then(newIncomeDoc => {
+                  db.collection('income')
+                  .doc(newIncomeDoc.id)
+                  .collection(yearCollection)
+                  .add(this.incomeData).then(() => {
+                        this.successMessage = 'Record added to your account!';
+                     }).catch(err => {
+                        this.errorMessage = err.message;
+                     });
+               }).catch(err => {
+                  console.log('Something went wrong: ' + err);
+               });
             }
          },
          cancelRecord(){

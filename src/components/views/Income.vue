@@ -89,7 +89,6 @@
    import { incomeCategories } from '../../utils'
    import firebase from 'firebase'
    import db from '../../firestore'
-   import { STORE_INCOME_GET_DOC_ID, STORE_INCOME_RESET_DOC_ID } from '../../store/modules/incomeStore'
 
    export default {
       name: 'income',
@@ -111,10 +110,6 @@
          }
       },
       mounted(){
-         const owner = this.$store.getters.getUserDoc;
-         let userIncomeDoc = db.collection('income').where('owner', '==', owner).get()
-            .then(doc => this.$store.dispatch(STORE_INCOME_GET_DOC_ID, doc.docs[0].id))
-            .catch(() => this.$store.dispatch(STORE_INCOME_RESET_DOC_ID));
          this.getRecords;
       },
       methods: {

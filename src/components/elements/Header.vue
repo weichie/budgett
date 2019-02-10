@@ -17,6 +17,7 @@
       STORE_AUTH_ACTION_RESET_USERINFO,
       STORE_AUTH_ACTION_IS_LOGGED_IN
    } from '../../store/modules/authStore'
+   import { STORE_INCOME_RESET_DOC_ID } from '../../store/modules/incomeStore'
 
    export default {
       data(){
@@ -37,6 +38,7 @@
             firebase.auth().signOut().then(() => {
                this.$store.dispatch(STORE_AUTH_ACTION_RESET_USERINFO);
                this.$store.dispatch(STORE_AUTH_ACTION_IS_LOGGED_IN, false);
+               this.$store.dispatch(STORE_INCOME_RESET_DOC_ID);
                this.$router.replace('login');
             });
          }

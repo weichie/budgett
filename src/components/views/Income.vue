@@ -136,9 +136,19 @@
                db.collection('income')
                  .doc(incomeDoc)
                  .collection(yearCollection)
-                 .add(this.incomeData).then(() => {
-                     this.successMessage = 'Record added to your account!';
-                     this.cancelRecord();
+                 .add(this.incomeData).then(addedDoc => {
+                    db.collection('users')
+                     .doc(this.$store.getters.getUserDoc)
+                     .collection('logs')
+                     .add({
+                        action: 'add',
+                        actionId: addedDoc.id,
+                        type: 'income',
+                        date: firebase.firestore.Timestamp.fromDate(new Date()),
+                     }).then(() => {
+                        this.successMessage = 'Record added to your account!';
+                        this.cancelRecord();
+                     });
                   }).catch(err => {
                      this.errorMessage = err.message;
                   });

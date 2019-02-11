@@ -27,10 +27,12 @@ const actions = {
                userObj = doc.data();
                userObj.docId = doc.id;
                commit(STORE_AUTH_ACTION_GET_USERINFO, userObj);
-            })
+            });
+            resolve();
          })
          .catch(function (error) {
             console.log("Error getting documents: ", error);
+            reject();
          });
    },
    [STORE_AUTH_ACTION_RESET_USERINFO]: ({commit}) => {

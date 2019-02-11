@@ -12,7 +12,7 @@
             </div>
             <div class="panel-body">
                <span class="currency-symbol">&euro;</span>
-               {{ income_budget }}
+               {{ incomeBudget }}
             </div>
          </div>
          <div class="panel">
@@ -24,7 +24,7 @@
             </div>
             <div class="panel-body">
                <span class="currency-symbol">&euro;</span>
-               {{ expense_budget }}
+               {{ expenseBudget }}
             </div>
          </div>
          <div class="panel">
@@ -36,7 +36,7 @@
             </div>
             <div class="panel-body">
                <span class="currency-symbol">&euro;</span>
-               {{ worth_budget }}
+               {{ worthBudget }}
             </div>
          </div>
          <div class="panel">
@@ -48,10 +48,18 @@
             </div>
             <div class="panel-body">
                <span class="currency-symbol">&euro;</span>
-               {{ savings_budget }}
+               {{ savingsBudget }}
             </div>
          </div>
       </div>
+
+      <ul>
+         <li v-for="(log, i) in userLogs" :key="'userlog_' + i">
+            <span class="action" v-if="log.action === 'add'">
+               <strong>Added</strong> a new record to <strong>{{log.type}}</strong>
+            </span>
+         </li>
+      </ul>
 
       <ul>
          <li>Reminders (payments / toDo's / Priorities / follow-ups / ...)</li>
@@ -64,11 +72,21 @@
 <script>
    import firebase from 'firebase'
    import db from '../../firestore'
-   import { STORE_INCOME_GET_DOC_ID, STORE_INCOME_RESET_DOC_ID } from '../../store/modules/incomeStore'
+   import { 
+      STORE_INCOME_GET_DOC_ID, 
+      STORE_INCOME_RESET_DOC_ID,
+      STORE_INCOME_GET_TOTAL
+   } from '../../store/modules/incomeStore'
 
    export default {
       name: 'dashboard',
-      mounted(){
+      data(){
+         return{
+            userLogs: [],
+            logError: null
+         }
+      },
+      created(){
          if(this.$store.getters.getIncomeDocId === null){
             setTimeout(() => {
                const owner = this.$store.getters.getUserDoc;
@@ -77,20 +95,35 @@
                   .catch(() => this.$store.dispatch(STORE_INCOME_RESET_DOC_ID));
             }, 500);
          }
+         setTimeout(() => {
+            this.$store.dispatch(STORE_INCOME_GET_TOTAL);
+         }, 600);
+         this.getLogs;
       },
       computed: {
-         income_budget(){
-            return 8453.84.toFixed(2)
+         incomeBudget(){
+            return this.$store.getters.getTotalIncome
          },
-         expense_budget(){
+         expenseBudget(){
             return 1647.23.toFixed(2)
          },
-         worth_budget(){
-            return (this.income_budget - this.expense_budget).toFixed(2)
+         worthBudget(){
+            return (this.incomeBudget - this.expenseBudget).toFixed(2)
          },
-         savings_budget(){
+         savingsBudget(){
             return 3500.83.toFixed(2)
+         },
+         getLogs(){
+            const logCollection = `users/${this.$store.getters.getUserDoc}/logs`;
+            db.collection(logCollection)
+              .get()
+              .then(snapShot => {
+                 snapShot.forEach(log => this.userLogs.push(log.data()));
+              })
+              .catch(err => {
+                 this.logError = err.message
+              })
          }
-      }
+      },
    }
 </script>

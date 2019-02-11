@@ -204,7 +204,7 @@
                }).catch(err => {
                   this.errorMessage = err.message
                });
-            }            
+            }
          },
          totalIncome(){
             let totalIncome = 0;
